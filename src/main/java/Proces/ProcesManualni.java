@@ -10,6 +10,6 @@ public class ProcesManualni extends Proces {
 
     @Override
     public String toString() {
-        return "MANU" + super.toString() + " pocet osob: " + pocetOsob;
+        return "MANU " + super.toString() + " pocet osob: " + pocetOsob;
     }
 }

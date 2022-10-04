@@ -5,7 +5,7 @@ import Proces.Proces;
 import Proces.ProcesManualni;
 import Proces.ProcesRoboticky;
 
-public class Generator<T> {
+public class Generator{
     static int id = 1;
     static int MIN_RG = 0;
     static int MAX_RG = 100;

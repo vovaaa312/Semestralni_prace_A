@@ -45,6 +45,7 @@ public class AbstrDoubleList<T> implements IAbstrDoubleList<T> {
         prvni = novy;
         if (first == null) posledni = novy;
         else first.predchozi = novy;
+        aktualni = prvni;
         pocetPvrku++;
     }
 
@@ -54,9 +55,10 @@ public class AbstrDoubleList<T> implements IAbstrDoubleList<T> {
 
         Prvek<T> last = posledni;
         Prvek<T> novy = new Prvek<T>(data, last, null);
-        prvni = novy;
+        posledni = novy;
         if (last == null) prvni = novy;
         else last.naslednik = novy;
+        aktualni = posledni;
         pocetPvrku++;
     }
 
