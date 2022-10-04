@@ -70,6 +70,7 @@ public class AbstrDoubleList<T> implements IAbstrDoubleList<T> {
             Prvek<T> novy = new Prvek<T>(data, aktualni, aktualni.naslednik);
             aktualni.naslednik.predchozi = novy;
             aktualni.naslednik = novy;
+            aktualni = novy;
             pocetPvrku++;
         }
     }
@@ -84,6 +85,7 @@ public class AbstrDoubleList<T> implements IAbstrDoubleList<T> {
             Prvek<T> novy = new Prvek<T>(data, aktualni.predchozi, aktualni);
             aktualni.predchozi.naslednik = novy;
             aktualni.predchozi = novy;
+            aktualni = novy;
             pocetPvrku++;
         }
     }

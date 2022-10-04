@@ -9,4 +9,6 @@ public class ProcesRoboticky extends Proces{
     public String toString() {
         return "ROBO " + super.toString();
     }
+
+
 }

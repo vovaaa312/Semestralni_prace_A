@@ -7,12 +7,10 @@ import AbstrLifo.IAbstLifo;
 import Enum.enumPozice;
 import Enum.enumReorg;
 import Proces.Proces;
-import Proces.Proces;
 import Proces.ProcesManualni;
 import Proces.ProcesRoboticky;
 
 import java.io.*;
-import java.util.Arrays;
 import java.util.Iterator;
 
 public class VyrobniProces implements IVyrobniProces {
@@ -22,17 +20,8 @@ public class VyrobniProces implements IVyrobniProces {
     @Override
     public int importDat(String soubor) {
         int pocet = 0;
+        procesy.zrus();
         try {
-//            BufferedReader bufferedReader = new BufferedReader(new FileReader(soubor));
-//            String line;
-//            String[]proces;
-//            bufferedReader.readLine();
-//            while((line = bufferedReader.readLine())!=null){
-//                proces = line.split(";");
-//                if(Integer.parseInt(proces[0]) == 0)procesy.vlozPosledni(new ProcesRoboticky(proces[0],14));
-//                else procesy.vlozPosledni(new ProcesManualni(proces[0],Integer.parseInt(proces[1]),Integer.parseInt(proces[2]) ));
-//            }
-//            bufferedReader.close();
 
             FileReader fr = new FileReader(soubor);
             BufferedReader br = new BufferedReader(fr);
@@ -43,14 +32,16 @@ public class VyrobniProces implements IVyrobniProces {
             while ((line = br.readLine()) != null) {
                 nactenyProces = line.split(";");
                 if (Integer.parseInt(nactenyProces[1]) == 0) proces = new ProcesRoboticky(nactenyProces[0], 14);
-                else proces = new ProcesManualni(nactenyProces[0], Integer.parseInt(nactenyProces[1]), Integer.parseInt(nactenyProces[2]));
+                else
+                    proces = new ProcesManualni(nactenyProces[0], Integer.parseInt(nactenyProces[1]), Integer.parseInt(nactenyProces[2]));
                 procesy.vlozPosledni(proces);
             }
             br.close();
 
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            System.out.println(ex.getLocalizedMessage());
+            ;
         }
 
         return pocet;
@@ -68,13 +59,163 @@ public class VyrobniProces implements IVyrobniProces {
     }
 
     @Override
-    public void reorganizace(enumReorg reorgan, IAbstLifo zasobnik) {
+    public void reorganizace(enumReorg reorgan, AbstrLifo zasobnik) {
+
+        ProcesManualni procesZFronty;
+        ProcesManualni procesABSTR = null;
+        Proces pom;
+        boolean pruchod = false;
+        switch (reorgan) {
+            case AGREGACE:
+                while (!zasobnik.jePrazdny()) {
+                    procesZFronty = (ProcesManualni) zasobnik.odeber();
+
+                    for (Iterator it = procesy.iterator(); it.hasNext(); ) {
+                        pom = (Proces) it.next();
+                        if (pom instanceof ProcesManualni) {
+                            procesABSTR = (ProcesManualni) pom;
+
+                        } else {
+                            procesy.zpristupniNaslednika();
+                            continue;
+                        }
+                        if (!pruchod) {
+                            procesy.zpristupniPrvni();
+                            pruchod = true;
+                        } else {
+                            procesy.zpristupniNaslednika();
+                        }
+                        if (procesZFronty == procesABSTR) {
+                            procesy.zpristupniNaslednika();
+                            procesZFronty = (ProcesManualni) it.next();
+                            int pocetLidi = procesZFronty.getPocetOsob() + procesABSTR.getPocetOsob();
+                            int cas = procesZFronty.getCas() + procesABSTR.getCas();
+                            ProcesManualni buffer = new ProcesManualni(procesABSTR.getId(), pocetLidi, cas);
+
+                            if (it.hasNext()) {
+                                procesy.odeberNaslednika();
+                                procesy.odeberNaslednika();
+                                procesy.vlozNaslednika(buffer);
+                            } else {
+                                procesy.odeberPosledni();
+                                procesy.odeberPredchudce();
+                                procesy.vlozNaslednika(buffer);
+                            }
+
+                        }
+
+                    }
+                    pruchod = false;
+                }
+
+                break;
+
+            case DEKOMPOZICE:
+
+                while (!zasobnik.jePrazdny()) {
+                    procesZFronty = (ProcesManualni) zasobnik.odeber();
+                    for (Iterator it = procesy.iterator(); it.hasNext(); ) {
+                        pom = (Proces) it.next();
+                        if (pom instanceof ProcesManualni) {
+                            procesABSTR = (ProcesManualni) pom;
+                        } else {
+                            procesy.zpristupniNaslednika();
+                            continue;
+                        }
+                        if (!pruchod) {
+                            procesy.zpristupniPrvni();
+                            pruchod = true;
+                        } else {
+                            procesy.zpristupniNaslednika();
+                        }
+                        if (procesZFronty == procesABSTR) {
+                            ProcesManualni novyproces_1;
+                            ProcesManualni novyproces_2;
+                            if (procesZFronty.getCas() % 2 == 0) {
+                                novyproces_1 = new ProcesManualni(procesZFronty.getId(), procesZFronty.getCas() / 2, procesZFronty.getPocetOsob() / 2
+                                );
+                                novyproces_2 = new ProcesManualni(procesZFronty.getId(), procesZFronty.getCas() / 2, procesZFronty.getPocetOsob() / 2);
+                            } else {
+                                novyproces_1 = new ProcesManualni(procesZFronty.getId(), procesZFronty.getCas() / 2, procesZFronty.getPocetOsob() / 2);
+                                novyproces_2 = new ProcesManualni(procesZFronty.getId(), 1 + procesZFronty.getCas() / 2, procesZFronty.getPocetOsob() / 2);
+                            }
+
+                            if (!it.hasNext()) {
+                                procesy.zpristupniPosledni();
+                                procesy.odeberPredchudce();
+                                procesy.vlozPosledni(novyproces_1);
+                                procesy.vlozNaslednika(novyproces_2);
+                            } else {
+                                procesy.zpristupniPosledni();
+                                procesy.odeberPredchudce();
+                                procesy.vlozPredchudce(novyproces_1);
+                                procesy.vlozPredchudce(novyproces_2);
+                            }
+
+
+                        }
+
+                    }
+                    pruchod = false;
+                }
+                break;
+        }
 
     }
 
     @Override
     public IAbstLifo vytipujKandidatiReorg(int cas, enumReorg reorgan) {
-        return null;
+        // Smazeme predchozi seznam kandidatu
+        kandidati.zrus();
+
+        // Zjistime, jestli pozadujeme dekompozici nebo agregaci
+        switch (reorgan) {
+            case AGREGACE:
+                // Projdeme seznam
+                for (Iterator it = procesy.iterator(); it.hasNext(); ) {
+                    Proces proces_prvni = (Proces) it.next();
+                    // Pokud je proces manualni tak pokracujeme
+                    if (proces_prvni instanceof ProcesManualni) {
+                        // Pokud ma 1. proces dobu trvani mensi nebo rovnu vybranemu kriteriu
+                        if (proces_prvni.getCas() <= cas) {
+                            if (it.hasNext()) {
+                                Proces proces_druhy = (Proces) it.next();
+                                // Pokud i druhy proces je manualni
+                                if (proces_druhy instanceof ProcesManualni) {
+                                    // Pokud i bezprostredne dalsi prvek vyhovuje kriteriu tak oba zaradime do seznamu
+                                    if (proces_druhy.getCas() <= cas) {
+                                        kandidati.vloz(proces_prvni);
+                                        System.out.println(proces_prvni);
+                                    }
+                                }
+                            } else {
+                                continue;
+                            }
+                        }
+                    } else {
+                        continue;
+                    }
+                }
+                break;
+
+            case DEKOMPOZICE:
+                // Projdeme seznam
+                for (Iterator it = procesy.iterator(); it.hasNext(); ) {
+                    Proces proces_prvni = (Proces) it.next();
+                    // Pokud je proces manualni tak pokracujeme
+                    if (proces_prvni instanceof ProcesManualni) {
+                        // Pokud ma proces dobu trvani vetsi nebo rovnu vybranemu kriteriu
+                        if (proces_prvni.getCas() >= cas) {
+                            kandidati.vloz(proces_prvni);
+                        }
+                    } else {
+                        continue;
+                    }
+                }
+                break;
+        }
+        //Navratime seznam
+        return kandidati;
     }
 
     @Override
@@ -109,4 +250,6 @@ public class VyrobniProces implements IVyrobniProces {
             case NASLEDUJICI -> procesy.vlozNaslednika(proces);
         }
     }
+
+
 }

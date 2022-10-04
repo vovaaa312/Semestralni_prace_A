@@ -21,4 +21,6 @@ public abstract class Proces {
     public String toString() {
         return "ID: " + id + " cas: " + cas;
     }
+
+
 }

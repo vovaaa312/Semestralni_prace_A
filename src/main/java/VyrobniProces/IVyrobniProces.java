@@ -1,5 +1,6 @@
 package VyrobniProces;
 
+import AbstrLifo.AbstrLifo;
 import AbstrLifo.IAbstLifo;
 import Proces.Proces;
 import Enum.enumPozice;
@@ -20,7 +21,7 @@ public interface IVyrobniProces<T> {
 
     IAbstLifo<T> vytipujKandidatiReorg(int cas, enumReorg reorgan);
 
-    void reorganizace(enumReorg reorgan, IAbstLifo zasobnik);
+    void reorganizace(enumReorg reorgan, AbstrLifo zasobnik);
 
     void zrus();
 }

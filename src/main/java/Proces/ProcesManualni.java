@@ -8,8 +8,14 @@ public class ProcesManualni extends Proces {
         this.pocetOsob = pocetOsob;
     }
 
+    public int getPocetOsob() {
+        return pocetOsob;
+    }
+
     @Override
     public String toString() {
         return "MANU " + super.toString() + " pocet osob: " + pocetOsob;
     }
+
+
 }
