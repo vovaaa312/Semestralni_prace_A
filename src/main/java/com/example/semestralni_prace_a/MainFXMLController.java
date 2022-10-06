@@ -235,6 +235,7 @@ public class MainFXMLController {
     @FXML
     void OnActionacistSouborBTN(ActionEvent event) {
         try {
+
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Confirmation Dialog");
             alert.setHeaderText("Chcete nacist data ze souboru?");

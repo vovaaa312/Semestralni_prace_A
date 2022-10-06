@@ -5,6 +5,7 @@ public class ProcesManualni extends Proces {
 
     public ProcesManualni(String id, int cas, int pocetOsob) {
         super(id, cas);
+
         this.pocetOsob = pocetOsob;
     }
 

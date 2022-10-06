@@ -18,23 +18,23 @@ public class Generator {
 
 
     public Proces generateManualProces(int pocetOsob, int cas) {
-        return new ProcesManualni(id++ + M, cas, pocetOsob);
+        return new ProcesManualni(M + id++, cas, pocetOsob);
     }
 
     public Proces generateRobotickyProces(int cas) {
-        return new ProcesRoboticky( id++ + R, cas);
+        return new ProcesRoboticky(R + id++, cas);
     }
 
     public Proces generateRandomRobotickyProces() {
 
         int cas = (int) ((Math.random() * (MAX_RG - MIN_RG)) + MIN_RG);
-        return new ProcesRoboticky(id++ + R, cas);
+        return new ProcesRoboticky(R + id++, cas);
     }
 
     public Proces generateRandomManualProces() {
         int cas = (int) ((Math.random() * (MAX_RG - MIN_RG)) + MIN_RG);
         int pocetOsosb = (int) ((Math.random() * (MAX_RG - MIN_RG)) + MIN_RG);
-        return new ProcesManualni(id++ + M, cas, pocetOsosb);
+        return new ProcesManualni(M + id++, cas, pocetOsosb);
     }
 
     public Proces generateRandomProcess() {
