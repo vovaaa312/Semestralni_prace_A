@@ -1,15 +1,12 @@
 package com.example.semestralni_prace_a;
 
 
-import AbstrDoubleList.AbstrDoubleList;
 import Proces.Proces;
 import Proces.ProcesManualni;
 import Proces.ProcesRoboticky;
 
-import java.util.Iterator;
-
 public class Generator {
-    static int id = 1;
+    static int id = 0;
     static int MIN_RG = 0;
     static int MAX_RG = 100;
 
@@ -17,8 +14,7 @@ public class Generator {
     static String R = "R";
 
 
-    public Proces generateManualProces(int pocetOsob, int cas) {
-        return new ProcesManualni(M + id++, cas, pocetOsob);
+    public Proces generateManualProces(int pocetOsob, int cas) {return new ProcesManualni(M + id++, cas, pocetOsob);
     }
 
     public Proces generateRobotickyProces(int cas) {
@@ -45,5 +41,11 @@ public class Generator {
         else proces = generateRandomRobotickyProces();
         return proces;
 
+    }
+    public static void reset(){
+        id = 0;
+    }
+    public static int getId() {
+        return id;
     }
 }

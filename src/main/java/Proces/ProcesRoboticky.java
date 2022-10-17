@@ -1,7 +1,7 @@
 package Proces;
 
 public class ProcesRoboticky extends Proces {
-    public ProcesRoboticky(String id, int cas) {
+    public ProcesRoboticky(String id, double cas) {
         super(id, cas);
     }
 

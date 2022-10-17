@@ -2,9 +2,9 @@ package Proces;
 
 public abstract class Proces {
     private String id;
-    private int cas; // v sekundach
+    private double cas; // v sekundach
 
-    public Proces(String id, int cas) {
+    public Proces(String id, double cas) {
         this.id = id;
         this.cas = cas;
     }
@@ -13,7 +13,7 @@ public abstract class Proces {
         return id;
     }
 
-    public int getCas() {
+    public double getCas() {
         return cas;
     }
 

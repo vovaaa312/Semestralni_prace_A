@@ -3,7 +3,7 @@ package Proces;
 public class ProcesManualni extends Proces {
     private int pocetOsob;
 
-    public ProcesManualni(String id, int cas, int pocetOsob) {
+    public ProcesManualni(String id, double cas, int pocetOsob) {
         super(id, cas);
 
         this.pocetOsob = pocetOsob;

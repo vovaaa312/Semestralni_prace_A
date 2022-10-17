@@ -173,6 +173,7 @@ public class MainFXMLController {
             case DEKOMPOZICE -> {
                 zasobnik = (AbstrLifo) vyrobniProces.vytipujKandidatiReorg(casSlider.getValue(), enumReorg.DEKOMPOZICE);
                 vyrobniProces.reorganizace(enumReorg.DEKOMPOZICE, (AbstrLifo) zasobnik);
+                break;
             }
         }
 
@@ -200,7 +201,7 @@ public class MainFXMLController {
         } catch (Exception ex) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error Dialog");
-            alert.setHeaderText("Prvek " + poziceChBox.getValue().toString() + " neexistuje");
+            alert.setHeaderText("Prvek " + poziceChBox.getValue().toString() + " neexistuje\n" + ex.getLocalizedMessage());
 
             alert.showAndWait();
         }
@@ -220,11 +221,12 @@ public class MainFXMLController {
             } else {
                 vyrobniProces.odeberProces(poziceChBox.getValue());
                 draw();
+                if(mainListView.getItems().isEmpty())Generator.reset();
             }
         } catch (Exception ex) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error Dialog");
-            alert.setHeaderText("Prvek " + poziceChBox.getValue().toString() + " neexistuje");
+            alert.setHeaderText("Prvek " + poziceChBox.getValue().toString() + " neexistuje\n" + ex.getLocalizedMessage());
 
             alert.showAndWait();
         }
@@ -242,7 +244,7 @@ public class MainFXMLController {
             alert.setContentText("Aktualni data budou smazana");
 
             Optional<ButtonType> result = alert.showAndWait();
-            if (result.get() == ButtonType.OK){
+            if (result.get() == ButtonType.OK) {
                 // ... user chose OK
                 vyrobniProces.importDat(soubor);
                 draw();
@@ -297,8 +299,9 @@ public class MainFXMLController {
     }
 
     public String toCSV(Proces proces) {
-        if (proces.getClass().equals(ProcesManualni.class)) return proces.getId() + ";" + ((ProcesManualni) proces).getPocetOsob() + ";" + proces.getCas();
-        if (proces.getClass().equals(ProcesRoboticky.class)) return proces.getId() + ";0;"+proces.getCas();
+        if (proces.getClass().equals(ProcesManualni.class))
+            return proces.getId() + ";" + ((ProcesManualni) proces).getPocetOsob() + ";" + proces.getCas();
+        if (proces.getClass().equals(ProcesRoboticky.class)) return proces.getId() + ";0;" + proces.getCas();
         else return null;
     }
 
