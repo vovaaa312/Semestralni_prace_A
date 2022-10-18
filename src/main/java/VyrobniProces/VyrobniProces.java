@@ -63,10 +63,10 @@ public class VyrobniProces implements IVyrobniProces {
     public void reorganizace(enumReorg reorgan, AbstrLifo zasobnik) {
         switch (reorgan) {
             case DEKOMPOZICE -> {
-                Dekompozice.dekompozice(zasobnik);
+                Dekompozice.reorganizace(zasobnik);
             }
             case AGREGACE -> {
-                Agregace.dekompozice(zasobnik);
+                Agregace.reorganizace(zasobnik);
             }
         }
 

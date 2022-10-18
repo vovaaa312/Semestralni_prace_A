@@ -42,7 +42,7 @@ public class Dekompozice {
         return (IAbstrLifo) kandidati;
     }
 
-    public static void dekompozice(IAbstrLifo<Proces> zasobnik) {
+    public static void reorganizace(IAbstrLifo<Proces> zasobnik) {
         IAbstrLifo<Proces> lifo = new AbstrLifo<Proces>();
         while (!zasobnik.jePrazdny()) {
             ProcesManualni proces = (ProcesManualni) zasobnik.odeber();
