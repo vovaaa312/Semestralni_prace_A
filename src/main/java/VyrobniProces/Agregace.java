@@ -8,8 +8,7 @@ import Proces.ProcesManualni;
 
 import java.util.Iterator;
 
-public class Dekompozice {
-
+public class Agregace {
     static void odeber(Proces proces, IAbstrDoubleList list) {
         Iterator iter = list.iterator();
         list.zpristupniPrvni();
@@ -44,12 +43,22 @@ public class Dekompozice {
 
     public static void dekompozice(IAbstrLifo<Proces> zasobnik) {
         IAbstrLifo<Proces> lifo = new AbstrLifo<Proces>();
+        ProcesManualni pom = null;
         while (!zasobnik.jePrazdny()) {
-            ProcesManualni proces = (ProcesManualni) zasobnik.odeber();
-            Proces prvni = new ProcesManualni(proces.getId(), proces.getCas() / 2, (int) Math.ceil(proces.getPocetOsob() / 2));
-            Proces druhy = new ProcesManualni(proces.getId() + "_D", proces.getCas() / 2, (int) Math.ceil(proces.getPocetOsob() / 2));
-            lifo.vloz(prvni);
-            lifo.vloz(druhy);
+            if(pom == null){
+                pom = (ProcesManualni)zasobnik.odeber();
+                if(zasobnik.jePrazdny()){
+                    ProcesManualni proces = (ProcesManualni)lifo.odeber();
+                     proces = new ProcesManualni(pom.getId()+"_S",pom.getCas()+ proces.getCas(), pom.getPocetOsob() + proces.getPocetOsob());
+                     lifo.vloz(proces);
+                }
+            }else{
+                ProcesManualni procesFronty = (ProcesManualni)zasobnik.odeber();
+                Proces proces = new ProcesManualni(pom.getId(), pom.getCas() + procesFronty.getCas(), pom.getPocetOsob() + procesFronty.getPocetOsob());
+                lifo.vloz(proces);
+                pom = null;
+            }
+
         }
 
         while (!lifo.jePrazdny()) zasobnik.vloz(lifo.odeber());

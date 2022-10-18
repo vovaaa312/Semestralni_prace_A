@@ -17,7 +17,6 @@ public class VyrobniProces implements IVyrobniProces {
     IAbstrDoubleList<Proces> procesy = new AbstrDoubleList<Proces>();
 
 
-
     @Override
     public int importDat(String soubor) {
         int pocet = 0;
@@ -66,8 +65,12 @@ public class VyrobniProces implements IVyrobniProces {
             case DEKOMPOZICE -> {
                 Dekompozice.dekompozice(zasobnik);
             }
+            case AGREGACE -> {
+                Agregace.dekompozice(zasobnik);
+            }
         }
-        procesy.zrus();
+
+        while (!zasobnik.jePrazdny()) procesy.vlozPosledni((Proces) zasobnik.odeber());
     }
 
     int getId(Proces proces) {
@@ -81,11 +84,11 @@ public class VyrobniProces implements IVyrobniProces {
     public IAbstrLifo vytipujKandidatiReorg(int cas, enumReorg reorgan) {
         switch (reorgan) {
             case DEKOMPOZICE -> {
-             return Dekompozice.vytipujKandidatiReorg(cas,procesy);
+                return Dekompozice.vytipujKandidatiReorg(cas, procesy);
             }
 
             case AGREGACE -> {
-                System.out.println("Not implemented yet");
+                return Agregace.vytipujKandidatiReorg(cas, procesy);
             }
         }
         return null;
