@@ -39,6 +39,7 @@ public class AbstrDoubleList<T> implements IAbstrDoubleList<T> {
     @Override
     public boolean jePrazdny() {
         return pocetPvrku == 0;
+
     }
 
     //vlozeni prvku na prvni pozice
@@ -170,7 +171,8 @@ public class AbstrDoubleList<T> implements IAbstrDoubleList<T> {
     //Nastavime prvni prvek jako aktualni
     @Override
     public T odeberPrvni() {
-        if (jePrazdny() || prvni == null) throw new NullPointerException();
+        if (jePrazdny()) throw new NullPointerException();
+        if(pocetPvrku==1)return odeberPosledni();
         //prvni prvek chranime do promeny aby potom vratit
         Prvek<T> prv = prvni;
         //menime odkaz z prvniho na naslednika prvniho

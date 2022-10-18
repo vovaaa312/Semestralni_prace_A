@@ -69,7 +69,7 @@ public class VyrobniProces implements IVyrobniProces {
                 Agregace.reorganizace(zasobnik);
             }
         }
-
+       // procesy.zrus();
         while (!zasobnik.jePrazdny()) procesy.vlozPosledni((Proces) zasobnik.odeber());
     }
 

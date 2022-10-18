@@ -12,6 +12,8 @@ public class Dekompozice {
 
     static void odeber(Proces proces, IAbstrDoubleList list) {
         Iterator iter = list.iterator();
+
+        //projdeme seznam a vyhodime ty prvky seznamu, ktere pak agregujeme
         list.zpristupniPrvni();
         if (proces.equals(list.zpristupniPrvni())) list.odeberPrvni();
         else {
@@ -28,10 +30,14 @@ public class Dekompozice {
     public static IAbstrLifo vytipujKandidatiReorg(double cas, IAbstrDoubleList<Proces> procesy) {
         IAbstrLifo<Proces> kandidati = new AbstrLifo<Proces>();
         Iterator iterator = procesy.iterator();
+        //projdeme seznam
         while (iterator.hasNext()) {
             Proces procesManualni = (Proces) iterator.next();
+            //pokud prvek vyhovuje pozadavkum...
             if (procesManualni instanceof ProcesManualni && procesManualni.getCas() <= cas) {
+                // vlozime ho do seznamu zasobniku
                 kandidati.vloz(procesManualni);
+                //vybereme kandidata z seznamu
                 odeber(procesManualni, procesy);
             }
 

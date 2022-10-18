@@ -34,17 +34,29 @@ public class Agregace {
         //projdeme seznam
         while (iterator.hasNext()) {
             Proces procesManualni = (Proces) iterator.next();
+            //pokud prvek vyhovuje pozadavkum...
             if (procesManualni instanceof ProcesManualni && procesManualni.getCas() <= cas) {
-                //pokud prvek vyhovuje pozadavkum, vlozime ho do seznamu zasobniku
+                // vlozime ho do seznamu zasobniku
                 kandidati.vloz(procesManualni);
                 //vybereme kandidata z seznamu
                 odeber(procesManualni, procesy);
             }
         }
-        return (IAbstrLifo) kandidati;
+        return kandidati;
     }
 
     public static void reorganizace(IAbstrLifo<Proces> zasobnik) {
+
+
+//        while (!zasobnik.jePrazdny()) {
+//            ProcesManualni prvni = (ProcesManualni) zasobnik.odeber();
+//            ProcesManualni druhy = (ProcesManualni) zasobnik.odeber();
+//            ProcesManualni novy = new ProcesManualni(prvni.getId(), prvni.getCas() + druhy.getCas(), prvni.getPocetOsob() + druhy.getPocetOsob());
+//            System.out.println(novy.toString());
+//
+//
+//        }
+
         IAbstrLifo<Proces> lifo = new AbstrLifo<Proces>();
         ProcesManualni pom = null;
         //projdeme seznam
@@ -52,6 +64,7 @@ public class Agregace {
             if(pom == null){
                 //do pomocne promene vlozime prvek ktery gregujeme
                 pom = (ProcesManualni)zasobnik.odeber();
+                //pokud zasobnik je prazdny,
                 if(zasobnik.jePrazdny()){
                     ProcesManualni proces = (ProcesManualni)lifo.odeber();
                      proces = new ProcesManualni(pom.getId()+"_S",pom.getCas()+ proces.getCas(), pom.getPocetOsob() + proces.getPocetOsob());
@@ -67,5 +80,5 @@ public class Agregace {
         }
 
         while (!lifo.jePrazdny()) zasobnik.vloz(lifo.odeber());
-    }
-}
+    }}
+
